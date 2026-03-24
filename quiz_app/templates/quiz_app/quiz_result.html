@@ -1,0 +1,56 @@
+{% extends 'quiz_app/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0 mb-5 rounded-4 overflow-hidden">
+            <div class="card-header bg-primary text-white text-center p-5">
+                <h2 class="fw-bold mb-0">Quiz Results</h2>
+                <p class="mb-0 mt-2 opacity-75">{{ quiz.title }}</p>
+            </div>
+            
+            <div class="card-body p-5">
+                <div class="text-center mb-5">
+                    <div class="display-1 fw-bold text-primary mb-3">
+                        {{ result.score }} <span class="fs-3 text-muted">/ {{ result.total_questions }}</span>
+                    </div>
+                    {% widthratio result.score result.total_questions 100 as percentage %}
+                    <div class="progress" style="height: 10px;">
+                        <div class="progress-bar {% if result.score >= result.total_questions|add:'-1' %}bg-success{% else %}bg-primary{% endif %}" 
+                             role="progressbar" 
+                             style="width: {{ percentage }}%;" 
+                             aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                    </div>
+                    <p class="lead mt-3 text-muted">Score: {{ percentage }}%</p>
+                </div>
+
+                <hr class="my-5 opacity-25">
+
+                <h4 class="fw-bold mb-4">Correct Answers</h4>
+
+                {% for question in questions %}
+                <div class="mb-4">
+                    <p class="fw-bold mb-2">{{ forloop.counter }}. {{ question.text }}</p>
+                    <ul class="list-group list-group-flush border rounded overflow-hidden shadow-sm">
+                        {% for choice in question.choices.all %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-3
+                                {% if choice.is_correct %} list-group-item-success fw-bold {% endif %}">
+                                <span>{{ choice.text }}</span>
+                                {% if choice.is_correct %}
+                                    <span class="badge bg-success rounded-pill px-3 py-2"><i class="bi bi-check-lg"></i> Correct</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+                
+                <div class="text-center mt-5">
+                    <a href="{% url 'home' %}" class="btn btn-outline-primary rounded-pill px-4 py-2 me-2">Back to Quizzes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

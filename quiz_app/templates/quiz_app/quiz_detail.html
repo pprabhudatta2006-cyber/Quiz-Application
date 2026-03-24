@@ -1,0 +1,37 @@
+{% extends 'quiz_app/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-5 text-center">
+                <h1 class="display-5 fw-bold text-primary mb-3">{{ quiz.title }}</h1>
+                <p class="lead text-muted mb-4">{{ quiz.description }}</p>
+                
+                <div class="row justify-content-center mb-5">
+                    <div class="col-auto">
+                        <div class="p-3 bg-light rounded shadow-sm">
+                            <span class="fs-4 fw-bold text-dark">{{ quiz.questions.count }}</span>
+                            <span class="d-block text-muted small text-uppercase fw-bold">Questions</span>
+                        </div>
+                    </div>
+                </div>
+
+                {% if quiz.questions.count > 0 %}
+                    <a href="{% url 'take_quiz' quiz.id %}" class="btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow">
+                        Start Quiz Now
+                    </a>
+                {% else %}
+                    <div class="alert alert-warning">
+                        This quiz has no questions yet.
+                    </div>
+                {% endif %}
+                
+                <div class="mt-4">
+                    <a href="{% url 'home' %}" class="text-decoration-none text-muted">← Back to Quizzes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
